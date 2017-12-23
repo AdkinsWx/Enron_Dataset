@@ -1,10 +1,12 @@
 (lp0
 S'poi'
 p1
-aS'bonus_per_salary'
+aS'poi_per_to_msg'
 p2
-aS'options_per_stock'
+aS'poi_per_from_msg'
 p3
 aS'bonus'
 p4
+aS'shared_receipt_with_poi'
+p5
 a.
