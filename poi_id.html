@@ -11803,12 +11803,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
+
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 <span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
@@ -11902,6 +11903,66 @@ C:\Users\Owner\Anaconda2\lib\site-packages\sklearn\grid_search.py:42: Deprecatio
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="s2">&quot;Total features: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;SKILLING JEFFREY K&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Total features:  21
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="s2">&quot;Here is the list of features: &quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;SKILLING JEFFREY K&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Here is the list of features: 
+
+[&#39;salary&#39;, &#39;to_messages&#39;, &#39;deferral_payments&#39;, &#39;total_payments&#39;, &#39;exercised_stock_options&#39;, &#39;bonus&#39;, &#39;restricted_stock&#39;, &#39;shared_receipt_with_poi&#39;, &#39;restricted_stock_deferred&#39;, &#39;total_stock_value&#39;, &#39;expenses&#39;, &#39;loan_advances&#39;, &#39;from_messages&#39;, &#39;other&#39;, &#39;from_this_person_to_poi&#39;, &#39;poi&#39;, &#39;director_fees&#39;, &#39;deferred_income&#39;, &#39;long_term_incentive&#39;, &#39;email_address&#39;, &#39;from_poi_to_this_person&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;METTS MARK&#39;</span><span class="p">]</span>
 </pre></div>
 
@@ -11938,6 +11999,131 @@ C:\Users\Owner\Anaconda2\lib\site-packages\sklearn\grid_search.py:42: Deprecatio
 <li>poi_per_from_msg</li>
 </ol>
 <p>These two features look at an individuals to and from messages and what fraction of each where to known poi's. Since the the financial behaviors were harder to pin down let's see if we have better luck using email behaviors.</p>
+<p>Let's take a look at some of the known poi's.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">poi</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">data</span><span class="p">][</span><span class="s1">&#39;poi&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">poi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span> <span class="s2">&quot; Here is the list of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; POI&#39;s: &quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="k">print</span> <span class="n">poi</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre> Here is the list of 18 POI&#39;s: 
+
+[&#39;HANNON KEVIN P&#39;, &#39;COLWELL WESLEY&#39;, &#39;RIEKER PAULA H&#39;, &#39;KOPPER MICHAEL J&#39;, &#39;SHELBY REX&#39;, &#39;DELAINEY DAVID W&#39;, &#39;LAY KENNETH L&#39;, &#39;BOWEN JR RAYMOND M&#39;, &#39;BELDEN TIMOTHY N&#39;, &#39;FASTOW ANDREW S&#39;, &#39;CALGER CHRISTOPHER F&#39;, &#39;RICE KENNETH D&#39;, &#39;SKILLING JEFFREY K&#39;, &#39;YEAGER F SCOTT&#39;, &#39;HIRKO JOSEPH&#39;, &#39;KOENIG MARK E&#39;, &#39;CAUSEY RICHARD A&#39;, &#39;GLISAN JR BEN F&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next we'll look at any missing data in our features, ie NaN values.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">missing_value</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">all_features</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;LOCKHART EUGENE E&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">people</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">all_features</span><span class="p">:</span>
+    <span class="n">missing_value</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">people</span><span class="p">:</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">all_features</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">person</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NaN&#39;</span><span class="p">:</span>
+            <span class="n">missing_value</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">records</span> <span class="o">+=</span><span class="mi">1</span>
+        
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Number of Missing Values for Each Feature:&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">all_features</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">missing_value</span><span class="p">[</span><span class="n">feature</span><span class="p">]))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Number of Missing Values for Each Feature:
+salary: 51
+to_messages: 60
+deferral_payments: 107
+total_payments: 21
+exercised_stock_options: 44
+bonus: 64
+restricted_stock: 36
+shared_receipt_with_poi: 60
+restricted_stock_deferred: 128
+total_stock_value: 20
+expenses: 51
+loan_advances: 142
+from_messages: 60
+other: 53
+from_this_person_to_poi: 60
+poi: 0
+director_fees: 129
+deferred_income: 97
+long_term_incentive: 80
+email_address: 35
+from_poi_to_this_person: 60
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see by the table above we have quite a lot of NaN values in our data set. Converting them to zero will help fill in the gaps in the data.</p>
 <p>Now before we get too far let's look for any obvious outliers. We'll plot and see if we can visually see any of the outliers.</p>
 
 </div>
@@ -11945,7 +12131,7 @@ C:\Users\Owner\Anaconda2\lib\site-packages\sklearn\grid_search.py:42: Deprecatio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">### Task 2: Remove outliers</span>
@@ -11960,6 +12146,17 @@ C:\Users\Owner\Anaconda2\lib\site-packages\sklearn\grid_search.py:42: Deprecatio
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;salary&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;bonus&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">salaries</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;salary&#39;</span><span class="p">])</span><span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">salaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;salary&#39;</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">:</span>    
+    <span class="k">if</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;salary&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">max</span><span class="p">(</span><span class="n">salaries</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s2">&quot;The person with the highest paid salary is: &quot;</span><span class="p">,</span> <span class="n">i</span>
+<span class="k">print</span> <span class="s2">&quot;Highest paid salary: &quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">salaries</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -12087,6 +12284,16 @@ GoaCJKnx/wHyW/O0vTHMbwAAAABJRU5ErkJggg==
 
 </div>
 
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The person with the highest paid salary is:  TOTAL
+Highest paid salary:  26704229
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -12104,7 +12311,7 @@ GoaCJKnx/wHyW/O0vTHMbwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">### remove any outliers before proceeding further</span>
@@ -12404,17 +12611,222 @@ EYmVEpGIiMRKiUhERGKlRCQiIrH6/4lw3FIdlKZsAAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After removing the outlier we can see the graph is much easier to interpret. There does seem to be a few outliers but these may also be our poi's.</p>
-<h2 id="2.-Feature-Processing">2. Feature Processing<a class="anchor-link" href="#2.-Feature-Processing">&#182;</a></h2><p>Now that we have finished cleaning and removing outliers from the we can create two new features.</p>
-<p>We will use the exercised_stock_options and total_stock_value to create options_per_stock. This will explore possible poi's that were dumping their Enron equity.</p>
-<p>We will also use bonus and salary to find anyone that received an outsized bonus and try to concluded if that makes them a poi.</p>
+<p>After removing the outlier we can see the graph is much easier to interpret. There does seem to be a few outliers but these may also be our poi's. Let's take a look at the top four salaries and determine if any are known poi's.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">highest_sal</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">outliers</span><span class="p">,</span><span class="n">key</span> <span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span>
+
+
+<span class="k">print</span> <span class="s2">&quot;The top 4 highest salary holders are: &quot;</span><span class="p">,</span> <span class="n">highest_sal</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The top 4 highest salary holders are:  [(&#39;SKILLING JEFFREY K&#39;, 1111258), (&#39;LAY KENNETH L&#39;, 1072321), (&#39;FREVERT MARK A&#39;, 1060932), (&#39;PICKERING MARK R&#39;, 655037)]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#determine if they are poi&#39;s</span>
+<span class="k">print</span> <span class="s2">&quot;The following are POI&#39;s among our top 4 outliers: &quot;</span>
+<span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="n">highest_sal</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">person</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;poi&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">person</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The following are POI&#39;s among our top 4 outliers: 
+SKILLING JEFFREY K
+LAY KENNETH L
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can see that some of the outliers are indeed POI's and thus we won't need any further cleaning of the data. So, with the data cleaned to where we need it we can now move on to feature processing.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="2.-Feature-Processing">2. Feature Processing<a class="anchor-link" href="#2.-Feature-Processing">&#182;</a></h2><p>Now that we have finished cleaning and removing outliers from the we can start creating a predicative algorithm to find POI's. We'll start but seeing how well the original features can predict a potential POI. After we discover a baseline of accuracy we will try to improve it by creating new features of our own.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#data_dict = pickle.load(open(&quot;../final_project/final_project_dataset.pkl&quot;, &quot;r&quot;) )</span>
+
+<span class="n">features_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;poi&#39;</span><span class="p">,</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="s1">&#39;from_poi_to_this_person&#39;</span><span class="p">,</span> <span class="s1">&#39;from_this_person_to_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;to_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;deferral_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;total_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;exercised_stock_options&#39;</span><span class="p">,</span> <span class="s1">&#39;bonus&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock&#39;</span><span class="p">,</span> <span class="s1">&#39;shared_receipt_with_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock_deferred&#39;</span><span class="p">,</span> <span class="s1">&#39;total_stock_value&#39;</span><span class="p">,</span> <span class="s1">&#39;expenses&#39;</span><span class="p">,</span> <span class="s1">&#39;loan_advances&#39;</span><span class="p">,</span> <span class="s1">&#39;from_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;other&#39;</span><span class="p">,</span> <span class="s1">&#39;director_fees&#39;</span><span class="p">,</span> <span class="s1">&#39;deferred_income&#39;</span><span class="p">,</span> <span class="s1">&#39;long_term_incentive&#39;</span><span class="p">]</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="c1">#split data into traing and testing sets</span>
+<span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+
+<span class="c1">#utlize decision tree</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="n">acc</span><span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Accuracy:  &#39;</span> <span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Precision:  &#39;</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Recall:  &#39;</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Decision Tree run time:  &#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s1">&#39;s&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Accuracy:   0.706896551724
+Precision:   0.153846153846
+Recall:   0.25
+Decision Tree run time:   0.007 s
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Using the given features we obtain an accuracy of about 71%. Next we will make a list that shows the importance of each feature. With this we can decide which features are worth keeping around.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">importance</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">feature_importances_</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">importance</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s2">&quot;{} Feature {} ({})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">features_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">importance</span><span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1 Feature salary (0.303225638483)
+2 Feature from_poi_to_this_person (0.266729323308)
+3 Feature from_this_person_to_poi (0.182731050113)
+4 Feature to_messages (0.113157894737)
+5 Feature deferral_payments (0.0991310307018)
+6 Feature total_payments (0.0207456140351)
+7 Feature exercised_stock_options (0.0142794486216)
+8 Feature bonus (0.0)
+9 Feature restricted_stock (0.0)
+10 Feature shared_receipt_with_poi (0.0)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After establishing a ranking we can see that there are several features that contribute very little to our accuracy. We will be leaving these features out from further calculations.</p>
+<p>Next let's create our new features and see if we can improve on the accuracy measures.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">### Task 3: Create new feature(s)</span>
@@ -12443,23 +12855,8 @@ EYmVEpGIiMRKiUhERGKlRCQiIrH6/4lw3FIdlKZsAAAAAElFTkSuQmCC
     <span class="n">data_dict</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;poi_per_from_msg&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">poi_per_from_msg</span><span class="p">[</span><span class="n">count</span><span class="p">]</span>
     <span class="n">count</span> <span class="o">+=</span><span class="mi">1</span>
 
-
-<span class="c1">### Store to my_dataset for easy export below.</span>
-<span class="n">my_dataset</span> <span class="o">=</span> <span class="n">data_dict</span>
-
-
-<span class="c1">### Extract features and labels from dataset for local testing</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
-
-<span class="c1">## split into labels and features (this line assumes that the first</span>
-<span class="c1">### feature in the array is the label, which is why &quot;poi&quot; must always</span>
-<span class="c1">### be first in features_list</span>
-<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-
-<span class="c1">#Provided to give you a starting point. Try a variety of classifiers.</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">cross_validation</span>
-<span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">cross_validation</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="c1">#test</span>
+<span class="c1">#print data_dict[&#39;SKILLING JEFFREY K&#39;][&#39;poi_per_to_msg&#39;]</span>
 </pre></div>
 
 </div>
@@ -12479,18 +12876,36 @@ EYmVEpGIiMRKiUhERGKlRCQiIrH6/4lw3FIdlKZsAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">### Store to my_dataset for easy export below.</span>
+<span class="n">my_dataset</span> <span class="o">=</span> <span class="n">data_dict</span>
+<span class="n">features_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;poi&#39;</span><span class="p">,</span><span class="s1">&#39;poi_per_to_msg&#39;</span><span class="p">,</span><span class="s1">&#39;poi_per_from_msg&#39;</span><span class="p">,</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="s1">&#39;from_poi_to_this_person&#39;</span><span class="p">,</span> <span class="s1">&#39;from_this_person_to_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;to_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;deferral_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;total_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;exercised_stock_options&#39;</span><span class="p">,</span> <span class="s1">&#39;bonus&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock&#39;</span><span class="p">,</span> <span class="s1">&#39;shared_receipt_with_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock_deferred&#39;</span><span class="p">,</span> <span class="s1">&#39;total_stock_value&#39;</span><span class="p">,</span> <span class="s1">&#39;from_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;director_fees&#39;</span><span class="p">,</span> <span class="s1">&#39;deferred_income&#39;</span><span class="p">,</span> <span class="s1">&#39;long_term_incentive&#39;</span><span class="p">]</span>
 
-<span class="n">clf</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
+
+<span class="c1">### Extract features and labels from dataset for local testing</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+
+<span class="c1">## split into labels and features (this line assumes that the first</span>
+<span class="c1">### feature in the array is the label, which is why &quot;poi&quot; must always</span>
+<span class="c1">### be first in features_list</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="c1">#Provided to give you a starting point. Try a variety of classifiers.</span>
+<span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1">#t0 = time()</span>
+<span class="n">clf</span> <span class="o">=</span><span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
 <span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span><span class="n">labels_test</span><span class="p">)</span>
-<span class="k">print</span> <span class="s2">&quot;Naive Bayes accuracy score: &quot;</span> <span class="p">,</span> <span class="n">accuracy</span>
 
-<span class="k">print</span> <span class="s2">&quot;Naive Bayes training time:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s2">&quot;s&quot;</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Accuracy:  &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Precision:  &#39;</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Recall:  &#39;</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="c1">#print &#39;Run Time:  &#39;, round(time()-t0, 3), &#39;s&#39;</span>
 </pre></div>
 
 </div>
@@ -12505,8 +12920,9 @@ EYmVEpGIiMRKiUhERGKlRCQiIrH6/4lw3FIdlKZsAAAAAElFTkSuQmCC
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Naive Bayes accuracy score:  0.727272727273
-Naive Bayes training time: 0.003 s
+<pre>Accuracy:  0.733333333333
+Precision:   0.5
+Recall:   0.25
 </pre>
 </div>
 </div>
@@ -12520,27 +12936,172 @@ Naive Bayes training time: 0.003 s
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Using the Naive Bayes algorithm we can an accuracy rating of 0.72 but let's try another algorithm to see if we can obtain a better accuracy.</p>
+<p>After adding our new features it appears that the precision has increased but the accuracy and recall haven't gotten to a deirable value. Let's recheck the features using SelectKbest. This should help narrow down the features a bit better than relying on my own intuition.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">SelectKBest</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;../final_project/final_project_dataset.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">features_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;poi&#39;</span><span class="p">,</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="s1">&#39;from_poi_to_this_person&#39;</span><span class="p">,</span> <span class="s1">&#39;from_this_person_to_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;to_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;deferral_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;total_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;exercised_stock_options&#39;</span><span class="p">,</span> <span class="s1">&#39;bonus&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock&#39;</span><span class="p">,</span> <span class="s1">&#39;shared_receipt_with_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock_deferred&#39;</span><span class="p">,</span> <span class="s1">&#39;total_stock_value&#39;</span><span class="p">,</span> <span class="s1">&#39;expenses&#39;</span><span class="p">,</span> <span class="s1">&#39;loan_advances&#39;</span><span class="p">,</span> <span class="s1">&#39;from_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;other&#39;</span><span class="p">,</span> <span class="s1">&#39;director_fees&#39;</span><span class="p">,</span> <span class="s1">&#39;deferred_income&#39;</span><span class="p">,</span> <span class="s1">&#39;long_term_incentive&#39;</span><span class="p">]</span>
+
+<span class="n">data</span><span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+
+<span class="n">selector</span> <span class="o">=</span> <span class="n">SelectKBest</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">selectedFeatures</span> <span class="o">=</span> <span class="n">selector</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="n">features_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">features_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">selectedFeatures</span><span class="o">.</span><span class="n">get_support</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="bp">True</span><span class="p">)]</span>
+
+<span class="k">print</span> <span class="s1">&#39;The best features to use are: &#39;</span><span class="p">,</span> <span class="n">features_names</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The best features to use are:  [&#39;salary&#39;, &#39;from_poi_to_this_person&#39;, &#39;from_this_person_to_poi&#39;, &#39;to_messages&#39;, &#39;deferral_payments&#39;, &#39;total_payments&#39;, &#39;restricted_stock&#39;, &#39;expenses&#39;, &#39;other&#39;, &#39;director_fees&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now that we have a better idea of what features should be used let's see if this achieves the imporvements that we are looking for.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;../final_project/final_project_dataset.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">features_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;poi&#39;</span><span class="p">,</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="s1">&#39;from_poi_to_this_person&#39;</span><span class="p">,</span> <span class="s1">&#39;from_this_person_to_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;to_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;deferral_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;total_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock&#39;</span><span class="p">,</span> <span class="s1">&#39;expenses&#39;</span><span class="p">,</span> <span class="s1">&#39;director_fees&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">clf</span> <span class="o">=</span><span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
+
+<span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Accuracy:  &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Precision:  &#39;</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Recall:  &#39;</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Accuracy:  0.933333333333
+Precision:   0.5
+Recall:   1.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After using the recommended features we were able to greatly improve the Accuracy, Precision, and Recall. With this let's experiment with with a few different algorithms that would best find our POI's. So far we have given DecisionTree a try but let's see how Adaboost and Random Forest fair.</p>
+<h3 id="Adaboost">Adaboost<a class="anchor-link" href="#Adaboost">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">features_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;poi&#39;</span><span class="p">,</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="s1">&#39;from_poi_to_this_person&#39;</span><span class="p">,</span> <span class="s1">&#39;from_this_person_to_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;to_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;deferral_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;total_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;exercised_stock_options&#39;</span><span class="p">,</span> <span class="s1">&#39;bonus&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock&#39;</span><span class="p">,</span> <span class="s1">&#39;shared_receipt_with_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock_deferred&#39;</span><span class="p">,</span> <span class="s1">&#39;total_stock_value&#39;</span><span class="p">,</span> <span class="s1">&#39;expenses&#39;</span><span class="p">,</span> <span class="s1">&#39;loan_advances&#39;</span><span class="p">,</span> <span class="s1">&#39;from_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;other&#39;</span><span class="p">,</span> <span class="s1">&#39;director_fees&#39;</span><span class="p">,</span> <span class="s1">&#39;deferred_income&#39;</span><span class="p">,</span> <span class="s1">&#39;long_term_incentive&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+
+
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
-<span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
-<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span><span class="n">labels_train</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">()</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
 <span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">labels_test</span><span class="p">)</span>
-<span class="k">print</span> <span class="s1">&#39;Decision Tree accuracy: &#39;</span><span class="p">,</span> <span class="n">accuracy</span>
 
-<span class="k">print</span> <span class="s2">&quot;Decision tree training time:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s2">&quot;s&quot;</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s1">&#39;Accuracy:  &#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Precision:  &#39;</span> <span class="p">,</span><span class="n">precision_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Recall:  &#39;</span> <span class="p">,</span><span class="n">recall_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12555,8 +13116,9 @@ Naive Bayes training time: 0.003 s
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Decision Tree accuracy:  0.818181818182
-Decision tree training time: 0.002 s
+<pre>Accuracy:   0.862068965517
+Precision:   0.5
+Recall:   0.25
 </pre>
 </div>
 </div>
@@ -12570,8 +13132,80 @@ Decision tree training time: 0.002 s
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After attempting a DecisionTree alogrithm it looks like our accuracy is significantly better from when we used NaiveBayes. 
-But let's see if we can tune the DecisionTree algorithm to get an even higher accuracy score. We will manipulate the min_samples_split parameter to attempt for better results.</p>
+<p>Using the Adaboost classifier the accuracy fell greatly along with the precision. Given this result we can rule out using Adaboost for the mean time.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[76]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
+
+<span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s1">&#39;Accuracy:  &#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Precision:  &#39;</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="k">print</span> <span class="s1">&#39;Recall:  &#39;</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Accuracy:   0.879310344828
+Precision:   1.0
+Recall:   0.125
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Using the RandomForestClassifier the accuracy came out just the same as Adaboost but Recall fell greatly while precision is 1.0. This could be a sign that the RandomForest classifier is overfitting and not giving us accurate measures. Given this observation it appears that DecisionTree is the best algorithm for our data_set</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 
 </div>
 </div>
@@ -12581,14 +13215,14 @@ But let's see if we can tune the DecisionTree algorithm to get an even higher ac
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="4.-Validating-and-Algorithm-Tuning">4. Validating and Algorithm Tuning<a class="anchor-link" href="#4.-Validating-and-Algorithm-Tuning">&#182;</a></h2><p>Here we will take DecisionTree algorithm and tune it to see if we improve on our already superior results.</p>
+<h2 id="4.-Validating-and-Algorithm-Tuning">4. Validating and Algorithm Tuning<a class="anchor-link" href="#4.-Validating-and-Algorithm-Tuning">&#182;</a></h2><p>Here we will take DecisionTree algorithm and tune it to see if we improve on our already superior results. Using GridSearchCV as a guide we should be able to find the ideal settings for DecisionTree</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">### Task 5: Tune your classifier to achieve better than .3 precision and recall </span>
@@ -12597,14 +13231,71 @@ But let's see if we can tune the DecisionTree algorithm to get an even higher ac
 <span class="c1">### function. Because of the small size of the dataset, the script uses</span>
 <span class="c1">### stratified shuffle split cross validation. For more info: </span>
 <span class="c1">### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">my_dataset</span>
+<span class="n">features_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;poi&#39;</span><span class="p">,</span><span class="s1">&#39;poi_per_to_msg&#39;</span><span class="p">,</span><span class="s1">&#39;poi_per_from_msg&#39;</span><span class="p">,</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="s1">&#39;from_poi_to_this_person&#39;</span><span class="p">,</span> <span class="s1">&#39;from_this_person_to_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;to_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;deferral_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;total_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock&#39;</span><span class="p">,</span> <span class="s1">&#39;expenses&#39;</span><span class="p">,</span> <span class="s1">&#39;director_fees&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
+
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;max_features&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">)}</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">DecisionTreeClassifier</span><span class="p">(),</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s1">&#39;The ideal tuned settings for DecisionTree is: &#39;</span>
+<span class="k">print</span> <span class="n">clf</span><span class="o">.</span><span class="n">best_estimator_</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The ideal tuned settings for DecisionTree is: 
+DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=2,
+            max_features=5, max_leaf_nodes=None, min_impurity_decrease=0.0,
+            min_impurity_split=None, min_samples_leaf=1,
+            min_samples_split=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=None, splitter=&#39;best&#39;)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[106]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">my_dataset</span>
+<span class="n">features_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;poi&#39;</span><span class="p">,</span><span class="s1">&#39;poi_per_to_msg&#39;</span><span class="p">,</span><span class="s1">&#39;poi_per_from_msg&#39;</span><span class="p">,</span><span class="s1">&#39;salary&#39;</span><span class="p">,</span> <span class="s1">&#39;from_poi_to_this_person&#39;</span><span class="p">,</span> <span class="s1">&#39;from_this_person_to_poi&#39;</span><span class="p">,</span> <span class="s1">&#39;to_messages&#39;</span><span class="p">,</span> <span class="s1">&#39;deferral_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;total_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock&#39;</span><span class="p">,</span> <span class="s1">&#39;expenses&#39;</span><span class="p">,</span> <span class="s1">&#39;director_fees&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
 
 
 <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
-<span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">min_samples_split</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">class_weight</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;gini&#39;</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">max_features</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">max_leaf_nodes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">min_impurity_decrease</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">min_impurity_split</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">min_samples_leaf</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">min_samples_split</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">min_weight_fraction_leaf</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">presort</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">splitter</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span><span class="n">labels_train</span><span class="p">)</span>
 <span class="n">pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features_test</span><span class="p">)</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">labels_test</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">labels_test</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
 <span class="k">print</span> <span class="s2">&quot;Algorithm validation:&quot;</span>
 
 <span class="k">print</span> <span class="s2">&quot;Decision tree training time:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s2">&quot;s&quot;</span>
@@ -12642,9 +13333,9 @@ But let's see if we can tune the DecisionTree algorithm to get an even higher ac
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Algorithm validation:
 Decision tree training time: 0.002 s
-precision = 0.667
-recall =  1.0
-accuracy after tuning =  0.909090909091
+precision = 0.400
+recall =  0.571428571429
+accuracy after tuning =  0.842105263158
 </pre>
 </div>
 </div>
@@ -12658,7 +13349,7 @@ accuracy after tuning =  0.909090909091
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After some tuning and setting the min_samples_split in our DecisionTree to 6 we were able to raise our accuracy to 0.91 and achieve an accuracy and recall of 0.67 and 1.0 respectively.</p>
+<p>Even after running GridSearchCV it still took some experimentation to find the right mixture of settings to achieve a the desired Precision and Recall score of better than 0.3. It's important to keep in mind that when viewing these scores 1.0 is the best and 0.0 is the worst.</p>
 
 </div>
 </div>
@@ -12668,8 +13359,8 @@ accuracy after tuning =  0.909090909091
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h2><p>Interpretating our precision an recall values helps us determine how well our program is at identifying POI's from other executives. Precision measures false positives or how many executives would be falsely identified as POI's. Given our value of 0.67 this means that 33% of our identified POI's are false alarms.</p>
-<p>Our other measure recall measures false negatives or how many POI's would be misidentified as regular executives. Given our value of 1.0 this means that we have captured all of the POI's but at the price of misidentifying regular executives. This could be a case of overfitting the data and thus capturing too many points that don't belong in the POI group.</p>
+<h2 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h2><p>Interpretating our precision an recall values helps us determine how well our program is at identifying POI's from other executives. Precision measures false positives or how many executives would be falsely identified as POI's. Given our value of 0.4 this means that 60% of our identified POI's are false alarms.</p>
+<p>Our other measure recall measures false negatives or how many POI's would be misidentified as regular executives. Given our value of .57 this means that we have captured 57% of the time we captured one of the POI's but at the price of misidentifying regular executives. This could be a case of overfitting the data and thus capturing too many points that don't belong in the POI group.</p>
 <p>As mentioned in the beginning of this paper I attempted to use financial data but the precision and recall was far below our threshold value of 0.3. This means that using the financial parameters I created was very inefficient. With this said further looking into the actual words used in the emails to/from the POI's could help keep our 33% of innocent executives safe from prosecution. Using a data set of keywords used between executives and the POI's would make our algorithm even more accurate.</p>
 
 </div>
