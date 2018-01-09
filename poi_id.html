@@ -12747,9 +12747,9 @@ LAY KENNETH L
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Accuracy:   0.706896551724
-Precision:   0.153846153846
-Recall:   0.25
+<pre>Accuracy:   0.741379310345
+Precision:   0.230769230769
+Recall:   0.375
 Decision Tree run time:   0.016 s
 </pre>
 </div>
@@ -12796,13 +12796,13 @@ Decision Tree run time:   0.016 s
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>1 Feature salary (0.303225638483)
-2 Feature from_poi_to_this_person (0.212288925439)
-3 Feature from_this_person_to_poi (0.182731050113)
-4 Feature to_messages (0.169736842105)
-5 Feature deferral_payments (0.111271929825)
-6 Feature total_payments (0.0207456140351)
-7 Feature exercised_stock_options (0.0)
-8 Feature bonus (0.0)
+2 Feature from_poi_to_this_person (0.182731050113)
+3 Feature from_this_person_to_poi (0.113157894737)
+4 Feature to_messages (0.111271929825)
+5 Feature deferral_payments (0.0991310307018)
+6 Feature total_payments (0.0848684210526)
+7 Feature exercised_stock_options (0.0848684210526)
+8 Feature bonus (0.0207456140351)
 9 Feature restricted_stock (0.0)
 10 Feature shared_receipt_with_poi (0.0)
 </pre>
@@ -13033,9 +13033,9 @@ Recall:   0.5
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Accuracy:  0.6
-Precision:   0.25
-Recall:   0.25
+<pre>Accuracy:  0.733333333333
+Precision:   0.5
+Recall:   0.5
 </pre>
 </div>
 </div>
@@ -13170,9 +13170,9 @@ Recall:   0.25
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Accuracy:   0.879310344828
-Precision:   1.0
-Recall:   0.125
+<pre>Accuracy:   0.896551724138
+Precision:   0.75
+Recall:   0.375
 </pre>
 </div>
 </div>
@@ -13230,7 +13230,7 @@ Recall:   0.125
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">### Task 5: Tune your classifier to achieve better than .3 precision and recall </span>
@@ -13247,7 +13247,7 @@ Recall:   0.125
 <span class="n">features_train</span><span class="p">,</span> <span class="n">features_test</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">,</span> <span class="n">labels_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
 
 
-<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;max_features&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">)}</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="s1">&#39;max_features&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span> <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">42</span><span class="p">]}</span>
 <span class="n">clf</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">DecisionTreeClassifier</span><span class="p">(),</span> <span class="n">parameters</span><span class="p">)</span>
 <span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features_train</span><span class="p">,</span> <span class="n">labels_train</span><span class="p">)</span>
 
@@ -13268,11 +13268,11 @@ Recall:   0.125
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>The ideal tuned settings for DecisionTree is: 
-DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=3,
+DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=8,
             max_features=3, max_leaf_nodes=None, min_impurity_decrease=0.0,
             min_impurity_split=None, min_samples_leaf=1,
-            min_samples_split=4, min_weight_fraction_leaf=0.0,
-            presort=False, random_state=None, splitter=&#39;best&#39;)
+            min_samples_split=3, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=42, splitter=&#39;best&#39;)
 </pre>
 </div>
 </div>
@@ -13295,28 +13295,52 @@ DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=3,
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">my_dataset</span>
-<span class="n">features_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;poi&#39;</span><span class="p">,</span> <span class="s1">&#39;poi_per_to_msg&#39;</span><span class="p">,</span> <span class="s1">&#39;poi_per_from_msg&#39;</span><span class="p">,</span> <span class="s1">&#39;deferral_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;total_payments&#39;</span><span class="p">,</span> <span class="s1">&#39;exercised_stock_options&#39;</span><span class="p">,</span> <span class="s1">&#39;bonus&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock&#39;</span><span class="p">,</span> <span class="s1">&#39;restricted_stock_deferred&#39;</span><span class="p">,</span><span class="s1">&#39;total_stock_value&#39;</span><span class="p">,</span><span class="s1">&#39;expenses&#39;</span><span class="p">,</span> <span class="s1">&#39;director_fees&#39;</span><span class="p">,</span> <span class="s1">&#39;deferred_income&#39;</span><span class="p">]</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#data = my_dataset</span>
+<span class="c1">#features_list = [&#39;poi&#39;, &#39;poi_per_to_msg&#39;, &#39;poi_per_from_msg&#39;, &#39;deferral_payments&#39;, &#39;total_payments&#39;, &#39;exercised_stock_options&#39;, &#39;bonus&#39;, &#39;restricted_stock&#39;, &#39;restricted_stock_deferred&#39;,&#39;total_stock_value&#39;,&#39;expenses&#39;, &#39;director_fees&#39;, &#39;deferred_income&#39;]</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">featureFormat</span><span class="p">(</span><span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
-<span class="n">labels</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">targetFeatureSplit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="c1">#data = featureFormat(my_dataset, features_list)</span>
+<span class="c1">#labels, features = targetFeatureSplit(data)</span>
 
 <span class="kn">from</span> <span class="nn">tester</span> <span class="kn">import</span> <span class="n">test_classifier</span>
+<span class="n">clf_opt</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">best_estimator_</span>
 
-<span class="n">test_classifier</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+<span class="n">test_classifier</span><span class="p">(</span><span class="n">clf_opt</span><span class="p">,</span> <span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
 
 <span class="c1">### Task 6: Dump your classifier, dataset, and features_list so anyone can</span>
 <span class="c1">### check your results. You do not need to change anything below, but make sure</span>
 <span class="c1">### that the version of poi_id.py that you submit can be run on its own and</span>
 <span class="c1">### generates the necessary .pkl files for validating your results.</span>
 
-<span class="n">dump_classifier_and_data</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
+<span class="n">dump_classifier_and_data</span><span class="p">(</span><span class="n">clf_opt</span><span class="p">,</span> <span class="n">my_dataset</span><span class="p">,</span> <span class="n">features_list</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=8,
+            max_features=3, max_leaf_nodes=None, min_impurity_decrease=0.0,
+            min_impurity_split=None, min_samples_leaf=1,
+            min_samples_split=3, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=42, splitter=&#39;best&#39;)
+	Accuracy: 0.84093	Precision: 0.39990	Recall: 0.38550	F1: 0.39257	F2: 0.38830
+	Total predictions: 15000	True positives:  771	False positives: 1157	False negatives: 1229	True negatives: 11843
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 

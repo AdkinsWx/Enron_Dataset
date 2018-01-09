@@ -464,7 +464,7 @@ print 'Recall:  ', recall_score(labels_test, pred)
 # 
 # Now, let's tune our algorithm and see if we improve on our results from above. Using GridSearchCV as a guide we should be able to find the ideal settings for DecisionTree
 
-# In[22]:
+# In[54]:
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -480,7 +480,7 @@ labels, features = targetFeatureSplit(data)
 features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size = 0.4, random_state = 42)
 
 
-parameters = {'min_samples_split': [2,3,4,5,6,7,8], 'max_depth': [1,2,3,4,5,6,7,8], 'max_features': range(3,10)}
+parameters = {'min_samples_split': [2,3,4,5,6,7,8,9,10], 'max_depth': [8], 'max_features': range(3,12), 'random_state': [42]}
 clf = GridSearchCV(DecisionTreeClassifier(), parameters)
 clf = clf.fit(features_train, labels_train)
 
@@ -498,24 +498,25 @@ print clf.best_estimator_
 # 
 # 
 
-# In[ ]:
+# In[55]:
 
-data = my_dataset
-features_list = ['poi', 'poi_per_to_msg', 'poi_per_from_msg', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'restricted_stock_deferred','total_stock_value','expenses', 'director_fees', 'deferred_income']
+#data = my_dataset
+#features_list = ['poi', 'poi_per_to_msg', 'poi_per_from_msg', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'restricted_stock_deferred','total_stock_value','expenses', 'director_fees', 'deferred_income']
 
-data = featureFormat(my_dataset, features_list)
-labels, features = targetFeatureSplit(data)
+#data = featureFormat(my_dataset, features_list)
+#labels, features = targetFeatureSplit(data)
 
 from tester import test_classifier
+clf_opt = clf.best_estimator_
 
-test_classifier(clf, my_dataset, features_list)
+test_classifier(clf_opt, my_dataset, features_list)
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
 ### that the version of poi_id.py that you submit can be run on its own and
 ### generates the necessary .pkl files for validating your results.
 
-dump_classifier_and_data(clf, my_dataset, features_list)
+dump_classifier_and_data(clf_opt, my_dataset, features_list)
 
 
 # In[ ]:
