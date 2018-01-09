@@ -332,7 +332,11 @@ print 'Recall:  ', recall_score(labels_test, pred)
 #print 'Run Time:  ', round(time()-t0, 3), 's'
 
 
-# After adding our new features it appears that the precision has increased but the accuracy and recall haven't gotten to a deirable value. Let's recheck the features using SelectKbest. This should help narrow down the features a bit better than relying on my own intuition.
+# After adding our new features it appears that the precision has increased but the accuracy and recall haven't gotten to a desirable value. Let's recheck the features using SelectKBest. This should help narrow down the features a bit better than relying on my own intuition.
+# 
+# SelectKBest takes in all of the features and will return the top most valuable features, in this case we asked for the top 12 features. This will help us further our accuracy, precision, and recall ratings.
+# 
+# 
 
 # In[16]:
 
@@ -354,6 +358,9 @@ features_names = [features_list[i] for i in selectedFeatures.get_support(indices
 print 'The best features to use are: ', features_names
 
 
+# As we can see from above we now have a list of the top 12 features to use. It looks like that one of our created features 'poi_per_from_msg' did not make the top 12. However, I decided to keep it as I want to see if we can achieve credible accuracy scores using both of the new features.
+# 
+# 
 # Now that we have a better idea of what features should be used let's see if this achieves the imporvements that we are looking for.
 
 # In[17]:
@@ -483,7 +490,13 @@ print clf.best_estimator_
 
 # Using GridSearchCV we were able to find the ideal parameters for our DecisionTree. 
 # 
-# The next step is to pass it through our final validation in which we will split the data into a training set and a testing set. The training set allows us to develope the algorithm while the test set tells us how well the algorithm will preform when applied to the full data set. With that said we used the StratifiedShuffledSplit from the test_classifier function found in test.py
+# 
+# ### More on validation
+# The next step is to pass it through our final validation in which we will split the data into a training set and a testing set. The training set allows us to develop the algorithm while the test set tells us how well the algorithm will preform when applied to the full data set. It's important to know that we do not train the data on the test. This is because we would receive an accuracy of 100% but in reality the algorithm would have been poorly trained. 
+# 
+# With that said we used the StratifiedShuffledSplit from the test_classifier function found in test.py. This function works well with small and unbalanced datasets such as the one we are currently working on.
+# 
+# 
 
 # In[ ]:
 

@@ -12937,7 +12937,8 @@ Recall:   0.5
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After adding our new features it appears that the precision has increased but the accuracy and recall haven't gotten to a deirable value. Let's recheck the features using SelectKbest. This should help narrow down the features a bit better than relying on my own intuition.</p>
+<p>After adding our new features it appears that the precision has increased but the accuracy and recall haven't gotten to a desirable value. Let's recheck the features using SelectKBest. This should help narrow down the features a bit better than relying on my own intuition.</p>
+<p>SelectKBest takes in all of the features and will return the top most valuable features, in this case we asked for the top 12 features. This will help us further our accuracy, precision, and recall ratings.</p>
 
 </div>
 </div>
@@ -12991,6 +12992,7 @@ Recall:   0.5
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>As we can see from above we now have a list of the top 12 features to use. It looks like that one of our created features 'poi_per_from_msg' did not make the top 12. However, I decided to keep it as I want to see if we can achieve credible accuracy scores using both of the new features.</p>
 <p>Now that we have a better idea of what features should be used let's see if this achieves the imporvements that we are looking for.</p>
 
 </div>
@@ -13285,7 +13287,8 @@ DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=3,
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Using GridSearchCV we were able to find the ideal parameters for our DecisionTree.</p>
-<p>The next step is to pass it through our final validation in which we will split the data into a training set and a testing set. The training set allows us to develope the algorithm while the test set tells us how well the algorithm will preform when applied to the full data set. With that said we used the StratifiedShuffledSplit from the test_classifier function found in test.py</p>
+<h3 id="More-on-validation">More on validation<a class="anchor-link" href="#More-on-validation">&#182;</a></h3><p>The next step is to pass it through our final validation in which we will split the data into a training set and a testing set. The training set allows us to develop the algorithm while the test set tells us how well the algorithm will preform when applied to the full data set. It's important to know that we do not train the data on the test. This is because we would receive an accuracy of 100% but in reality the algorithm would have been poorly trained.</p>
+<p>With that said we used the StratifiedShuffledSplit from the test_classifier function found in test.py. This function works well with small and unbalanced datasets such as the one we are currently working on.</p>
 
 </div>
 </div>
