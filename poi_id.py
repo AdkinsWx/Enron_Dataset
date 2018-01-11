@@ -249,13 +249,12 @@ print 'Decision Tree run time:  ', round(time()-t0, 3), 's'
 
 # In[13]:
 
-
 import numpy as np
 
 importance = clf.feature_importances_
 index = np.argsort(importance)[::-1]
 
-for i in range(10):
+for i in range(18):
     print "{} Feature {} ({})".format(i+1, features_list[i+1], importance[index[i]])
 
 
@@ -332,13 +331,18 @@ print 'Recall:  ', recall_score(labels_test, pred)
 #print 'Run Time:  ', round(time()-t0, 3), 's'
 
 
-# After adding our new features it appears that the precision has increased but the accuracy and recall haven't gotten to a desirable value. Let's recheck the features using SelectKBest. This should help narrow down the features a bit better than relying on my own intuition.
+# In[ ]:
+
+
+
+
+# After adding our new features it appears that the precision has increased but the accuracy and recall haven't gotten to a desirable value. Let's recheck the features using SelectKBest. This should help narrow down the features a bit better than relying on my own intuition. We'll also produce a graph of the feature scores. This will help us look for any noteable dropoffs in scores were we can divide the ones we will keep against the ones we'll drop.
 # 
-# SelectKBest takes in all of the features and will return the top most valuable features, in this case we asked for the top 12 features. This will help us further our accuracy, precision, and recall ratings.
+# SelectKBest takes in all of the features and returns the top 10 by default. But as noted above we'll use a graph to help determine which features are worth keeping. This helps because if we were to blindly take just the top 10 features we would be missing out on the 11th feature which may be close in importance to the 10 feature. Or the 11th feature's importanced may significantly less than the 10th in which we would only use the top 10. After, refining our features this will help us further our accuracy, precision, and recall ratings.
 # 
 # 
 
-# In[16]:
+# In[18]:
 
 from sklearn.feature_selection import SelectKBest
 data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "r") )
@@ -351,30 +355,69 @@ labels, features = targetFeatureSplit(data)
 features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size=0.1, random_state=42)
 
 
-selector = SelectKBest(k=12)
+selector = SelectKBest()
 selectedFeatures = selector.fit(features, labels)
 features_names = [features_list[i] for i in selectedFeatures.get_support(indices=True)]
 
-print 'The best features to use are: ', features_names
+#print 'The best features to use are: ', features_names
 
 
-# As we can see from above we now have a list of the top 12 features to use. It looks like that one of our created features 'poi_per_from_msg' did not make the top 12. However, I decided to keep it as I want to see if we can achieve credible accuracy scores using both of the new features.
-# 
+# In[19]:
+
+scores = selector.scores_
+
+sorting = np.argsort(scores)[::-1]
+
+#print len(sorting)
+#print scores
+#std = np.std([scores], axis=0)
+
+for i in range(21):
+    print "{} Feature {} ({})".format(i+1, features_list[i+1], scores[sorting[i]])
+plt.barh(range(21), scores[sorting])
+plt.yticks(range(21), features_list[1:])
+plt.show()
+
+
+# After reviewing the ranking and the graph we can see that there are two significant steps down in scores. The first is bewteen **from_this_person_to_poi** and **to_messages** the second large step is between **other** and **director_fees**. In deciding between which drop off mark to use I first found out which pair had the larger percentage gap between the values.
+
+# In[20]:
+
+def percent_diff(feature1, feature2):
+    if feature1 > feature2:
+        diff1 = (1 - (feature2/feature1))*100.0
+        return diff1
+    if feature1 < feature2:
+        diff2 = (1 - (feature1/feature2))*100.0
+        return diff2
+    
+    
+print "The difference between 'from_this_person_to_poi' and 'to_messages': %.2f percent" % percent_diff(16.64,11.60)
+
+
+print "The difference between 'other' and 'director_fees': %.2f percent" % percent_diff(1.70,.22)
+
+
+# As we can see the percentage drop is much higher between **other** and **director_fees**. Given this new inofmation we will make our split here so that any feature with a score less than 1.70 will be left out of our list.
 # 
 # Now that we have a better idea of what features should be used let's see if this achieves the imporvements that we are looking for.
 
-# In[17]:
+# In[21]:
 
-data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "r") )
-
-features_list = ['poi', 'poi_per_to_msg', 'poi_per_from_msg', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'restricted_stock_deferred','total_stock_value','expenses', 'director_fees', 'deferred_income']
+features_list = ['poi','salary', 'poi_per_to_msg', 'poi_per_from_msg', 'from_poi_to_this_person', 'from_this_person_to_poi', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'other']# 'director_fees', 'deferred_income', 'long_term_incentive']
 data = featureFormat(my_dataset, features_list)
 labels, features = targetFeatureSplit(data)
 
-features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size=0.1, random_state=42)
+features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size = 0.4, random_state = 42)
+
+
+# In[29]:
 
 clf =DecisionTreeClassifier()
 clf = clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+clf.fit(features_train, labels_train)
 pred = clf.predict(features_test)
 
 acc = accuracy_score(labels_test, pred)
@@ -393,15 +436,15 @@ print 'Recall:  ', recall_score(labels_test, pred)
 
 
 
-# After using the recommended features our accuracy, precision, and recall scores were more or less flat. I also decided to leave my feature 'poi_per_from_msg' in the feature list as a way to see it's affect on other algorithms. So let's see if any other algorithm's will improve on our scores.
+# After using the recommended features our accuracy, precision, and recall scores were more or less flat. So let's see if any other algorithm's will improve on our scores.
 # 
 # 
 # 
 # ### Adaboost
 
-# In[18]:
+# In[30]:
 
-features_list = ['poi', 'poi_per_to_msg', 'poi_per_from_msg', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'restricted_stock_deferred','total_stock_value','expenses', 'director_fees', 'deferred_income']
+features_list = ['poi','salary', 'poi_per_to_msg', 'poi_per_from_msg', 'from_poi_to_this_person', 'from_this_person_to_poi', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'other']# 'director_fees', 'deferred_income', 'long_term_incentive']
 data = featureFormat(my_dataset, features_list)
 labels, features = targetFeatureSplit(data)
 
@@ -423,9 +466,9 @@ print 'Precision:  ' ,precision_score(labels_test, pred)
 print 'Recall:  ' ,recall_score(labels_test, pred)
 
 
-# Using the Adaboost classifier the accuracy increased by our precision and recall scores fell. This could be a sign of underfitting as the Adaboost algorithm is favoring misidentifying POI's, which is a small part of the dataset, over misidentifying non-POI's, the greater part of the dataset. Because of this let's see if RandomForest will be a better solution versus our DecisionTree.
+# Using the Adaboost classifier the accuracy increased but our precision and recall scores fell. This could be a sign of underfitting as the Adaboost algorithm is favoring misidentifying POI's, which is a small part of the dataset, over misidentifying non-POI's, the greater part of the dataset. Because of this let's see if RandomForest will be a better solution versus our DecisionTree.
 
-# In[19]:
+# In[32]:
 
 from sklearn.ensemble import RandomForestClassifier
 
@@ -441,11 +484,6 @@ print 'Recall:  ', recall_score(labels_test, pred)
 
 
 # Using the RandomForestClassifier the accuracy came out as significantly better than Adaboost but Recall fell greatly while precision is 1.0. This could be a sign that the RandomForest classifier is overfitting and not giving us accurate measures. Given this observation it appears that DecisionTree is the best algorithm for our data_set.
-
-# In[ ]:
-
-
-
 
 # 
 
@@ -464,7 +502,7 @@ print 'Recall:  ', recall_score(labels_test, pred)
 # 
 # Now, let's tune our algorithm and see if we improve on our results from above. Using GridSearchCV as a guide we should be able to find the ideal settings for DecisionTree
 
-# In[54]:
+# In[33]:
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -473,14 +511,14 @@ print 'Recall:  ', recall_score(labels_test, pred)
 ### stratified shuffle split cross validation. For more info: 
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 data = my_dataset
-features_list = ['poi', 'poi_per_to_msg', 'poi_per_from_msg', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'restricted_stock_deferred','total_stock_value','expenses', 'director_fees', 'deferred_income']
+features_list = ['poi','salary', 'poi_per_to_msg', 'poi_per_from_msg', 'from_poi_to_this_person', 'from_this_person_to_poi', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'other']#, 'director_fees', 'deferred_income', 'long_term_incentive']
 data = featureFormat(my_dataset, features_list)
 labels, features = targetFeatureSplit(data)
 
 features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size = 0.4, random_state = 42)
 
 
-parameters = {'min_samples_split': [2,3,4,5,6,7,8,9,10], 'max_depth': [8], 'max_features': range(3,12), 'random_state': [42]}
+parameters = {'min_samples_split': [2,3,4,5,6,7,8,9,10], 'max_depth': range(1,19), 'max_features': range(3,6), 'random_state': [42]}
 clf = GridSearchCV(DecisionTreeClassifier(), parameters)
 clf = clf.fit(features_train, labels_train)
 
@@ -498,7 +536,7 @@ print clf.best_estimator_
 # 
 # 
 
-# In[55]:
+# In[34]:
 
 #data = my_dataset
 #features_list = ['poi', 'poi_per_to_msg', 'poi_per_from_msg', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'restricted_stock_deferred','total_stock_value','expenses', 'director_fees', 'deferred_income']
