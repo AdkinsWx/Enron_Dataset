@@ -342,7 +342,7 @@ print 'Recall:  ', recall_score(labels_test, pred)
 # 
 # 
 
-# In[18]:
+# In[16]:
 
 from sklearn.feature_selection import SelectKBest
 data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "r") )
@@ -362,7 +362,7 @@ features_names = [features_list[i] for i in selectedFeatures.get_support(indices
 #print 'The best features to use are: ', features_names
 
 
-# In[19]:
+# In[17]:
 
 scores = selector.scores_
 
@@ -381,7 +381,7 @@ plt.show()
 
 # After reviewing the ranking and the graph we can see that there are two significant steps down in scores. The first is bewteen **from_this_person_to_poi** and **to_messages** the second large step is between **other** and **director_fees**. In deciding between which drop off mark to use I first found out which pair had the larger percentage gap between the values.
 
-# In[20]:
+# In[18]:
 
 def percent_diff(feature1, feature2):
     if feature1 > feature2:
@@ -402,7 +402,7 @@ print "The difference between 'other' and 'director_fees': %.2f percent" % perce
 # 
 # Now that we have a better idea of what features should be used let's see if this achieves the imporvements that we are looking for.
 
-# In[21]:
+# In[19]:
 
 features_list = ['poi','salary', 'poi_per_to_msg', 'poi_per_from_msg', 'from_poi_to_this_person', 'from_this_person_to_poi', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'other']# 'director_fees', 'deferred_income', 'long_term_incentive']
 data = featureFormat(my_dataset, features_list)
@@ -411,7 +411,7 @@ labels, features = targetFeatureSplit(data)
 features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size = 0.4, random_state = 42)
 
 
-# In[29]:
+# In[31]:
 
 clf =DecisionTreeClassifier()
 clf = clf.fit(features_train, labels_train)
@@ -442,7 +442,7 @@ print 'Recall:  ', recall_score(labels_test, pred)
 # 
 # ### Adaboost
 
-# In[30]:
+# In[21]:
 
 features_list = ['poi','salary', 'poi_per_to_msg', 'poi_per_from_msg', 'from_poi_to_this_person', 'from_this_person_to_poi', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'other']# 'director_fees', 'deferred_income', 'long_term_incentive']
 data = featureFormat(my_dataset, features_list)
@@ -468,7 +468,7 @@ print 'Recall:  ' ,recall_score(labels_test, pred)
 
 # Using the Adaboost classifier the accuracy increased but our precision and recall scores fell. This could be a sign of underfitting as the Adaboost algorithm is favoring misidentifying POI's, which is a small part of the dataset, over misidentifying non-POI's, the greater part of the dataset. Because of this let's see if RandomForest will be a better solution versus our DecisionTree.
 
-# In[32]:
+# In[22]:
 
 from sklearn.ensemble import RandomForestClassifier
 
@@ -502,7 +502,7 @@ print 'Recall:  ', recall_score(labels_test, pred)
 # 
 # Now, let's tune our algorithm and see if we improve on our results from above. Using GridSearchCV as a guide we should be able to find the ideal settings for DecisionTree
 
-# In[33]:
+# In[85]:
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall 
 ### using our testing script. Check the tester.py script in the final project
@@ -511,14 +511,14 @@ print 'Recall:  ', recall_score(labels_test, pred)
 ### stratified shuffle split cross validation. For more info: 
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 data = my_dataset
-features_list = ['poi','salary', 'poi_per_to_msg', 'poi_per_from_msg', 'from_poi_to_this_person', 'from_this_person_to_poi', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'other']#, 'director_fees', 'deferred_income', 'long_term_incentive']
+features_list = ['poi','salary', 'poi_per_to_msg', 'poi_per_from_msg', 'from_poi_to_this_person', 'from_this_person_to_poi', 'to_messages', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'shared_receipt_with_poi', 'restricted_stock_deferred', 'total_stock_value', 'expenses', 'loan_advances', 'from_messages', 'other']# 'director_fees', 'deferred_income', 'long_term_incentive']
 data = featureFormat(my_dataset, features_list)
 labels, features = targetFeatureSplit(data)
 
-features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size = 0.4, random_state = 42)
+features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size = 0.4, random_state = 70)
 
 
-parameters = {'min_samples_split': [2,3,4,5,6,7,8,9,10], 'max_depth': range(1,19), 'max_features': range(3,6), 'random_state': [42]}
+parameters = {'min_samples_split': range(2,10), 'max_depth': range(1,19), 'max_features': range(3,12), 'random_state': [60]}
 clf = GridSearchCV(DecisionTreeClassifier(), parameters)
 clf = clf.fit(features_train, labels_train)
 
@@ -536,7 +536,7 @@ print clf.best_estimator_
 # 
 # 
 
-# In[34]:
+# In[87]:
 
 #data = my_dataset
 #features_list = ['poi', 'poi_per_to_msg', 'poi_per_from_msg', 'deferral_payments', 'total_payments', 'exercised_stock_options', 'bonus', 'restricted_stock', 'restricted_stock_deferred','total_stock_value','expenses', 'director_fees', 'deferred_income']
